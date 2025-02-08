@@ -6,6 +6,17 @@
 
 **如果有什么有趣的应用，欢迎分享**
 
+
+## 安装
+### 编译源码
+1. 下载源码后自行编译
+2. Obsidian插件目录新建obsidian-python-runner目录，并将生成的 `main.js` 和 `manifest.json` 复制进去
+3. 将python代码放到obsidian-python-runner/pyscripts中
+
+### 直接下载
+1. 下载 [latest release](https://github.com/xiaodg/obsidian-python-runner/releases/latest)
+2. 解压到Obsidian 插件目录
+
 ## 功能特点
 
 - 🚀 在笔记中直接执行 Python 代码
