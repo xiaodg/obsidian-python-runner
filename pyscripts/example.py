@@ -39,6 +39,8 @@ def generate_word_cloud(doc):
     # 使用文档所在目录
     doc_dir = os.path.dirname(doc['path'])  #文档目录，相对路径
     attachments_dir = os.path.join(notebook_dir,doc_dir, 'attachments') #附件目录
+    if not os.path.exists(attachments_dir):
+        os.makedirs(attachments_dir)
     img_name = 'wordcloud.png'
     img_path = os.path.join(attachments_dir, img_name)
     
