@@ -1,8 +1,8 @@
-from openai import OpenAI
 #Deepseek API应用示例，可更改为OpenAI或其他类似接口
 
 
 def deepseek_r1(query):
+	from openai import OpenAI
 	"""通过DeepSeek API使用Reasoner模型，会输出其思考过程与最终回答。"""
 	
 	api_key="你的Deepseek API KEY"
@@ -30,6 +30,7 @@ def deepseek_r1(query):
 		return str(e)
 
 def deepseek_chat(query):
+	from openai import OpenAI
 	"""通过DeepSeek API使用Chat模型，会输出最终回答。"""
 
 	api_key="你的Deepseek API KEY"
