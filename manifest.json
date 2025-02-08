@@ -1,0 +1,10 @@
+{
+    "id": "obsidian-python-runner",
+    "name": "Python Runner",
+    "version": "1.0.0",
+    "minAppVersion": "0.15.0",
+    "description": "Run Python code directly in your Obsidian notes. Analyze documents, generate charts, and process text with ease.",
+    "author": "xiaodg",
+    "authorUrl": "https://github.com/xiaodg/obsidian-python-runner",
+    "isDesktopOnly": true
+}
