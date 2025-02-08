@@ -1,0 +1,4 @@
+matplotlib
+wordcloud
+jieba
+openai
