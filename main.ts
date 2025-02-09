@@ -18,9 +18,9 @@ export default class PythonRunnerPlugin extends Plugin {
     async onload() {
         await this.loadSettings();
 
-        // 监听键盘事件
+        // Listen for keyboard events
         this.registerDomEvent(document, 'keydown', (evt: KeyboardEvent) => {
-            // 检查是否按下回车键
+            // Check if the Enter key is pressed
             if (evt.key === 'Enter' || evt.keyCode === 13) {
                 const view = this.app.workspace.getActiveViewOfType(MarkdownView);
                 if (!view) return;
@@ -38,7 +38,7 @@ export default class PythonRunnerPlugin extends Plugin {
             }
         });
 
-        // 添加设置选项卡
+        // Add settings tab
         this.addSettingTab(new PythonRunnerSettingTab(this.app, this));
     }
 
@@ -63,7 +63,7 @@ export default class PythonRunnerPlugin extends Plugin {
                 const pluginDir = path.join(vaultPath, '.obsidian', 'plugins', 'obsidian-python-runner');
                 const scriptsDir = path.join(pluginDir, 'pyscripts');
 
-                // 获取当前文档信息
+                // Get current document information
                 if (!view || !view.file) {
                     throw new Error('No active document view');
                 }
@@ -72,7 +72,7 @@ export default class PythonRunnerPlugin extends Plugin {
                 const editor = view.editor;
                 const fileCache = this.app.metadataCache.getFileCache(file);
                 
-                // 准备文档信息
+                // Prepare document information
                 const docInfo = {
                     title: file.basename,
                     path: file.path,
@@ -87,7 +87,7 @@ export default class PythonRunnerPlugin extends Plugin {
                     selection: editor.getSelection()
                 };
 
-                // 转义特殊字符
+                // Escape special characters
                 const jsonStr = JSON.stringify(docInfo)
                     .replace(/\\/g, '\\\\')
                     .replace(/'/g, "\\'")
@@ -100,63 +100,63 @@ import os
 import glob
 import json
 
-# 设置默认编码为 UTF-8
+# Set default encoding to UTF-8
 import sys
 sys.stdout.reconfigure(encoding='utf-8')
 sys.stderr.reconfigure(encoding='utf-8')
 
-# 添加脚本目录到 Python 路径
-scripts_dir = r'${scriptsDir.replace(/\\/g, '\\\\')}'
-sys.path.append(scripts_dir)
+# Add script directory to Python path
+scripts_dir = r'${scriptsDir.replace(/\\/g, '\\\\')}';
+sys.path.append(scripts_dir);
 
-# 设置文档信息和修改接口
-doc = json.loads('${jsonStr}')
+# Set document information and modification interface
+doc = json.loads('${jsonStr}');
 
 def set_content(new_content):
-    """替换整个文档内容"""
-    print('__SET_CONTENT__' + new_content)
-    return None
+    """Replace entire document content"""
+    print('__SET_CONTENT__' + new_content);
+    return None;
 
-# 将set_content添加到builtins中，使其在所有模块中可用
-import builtins
-setattr(builtins, 'set_content', set_content)
-setattr(builtins, 'doc', doc)
+# Add set_content to builtins so it is available in all modules
+import builtins;
+setattr(builtins, 'set_content', set_content);
+setattr(builtins, 'doc', doc);
 
-# 导入所有 .py 文件中的非下划线开头函数
+# Import all non-underscore-prefixed functions from .py files
 for file in glob.glob(os.path.join(scripts_dir, "*.py")):
-    module_name = os.path.splitext(os.path.basename(file))[0]
+    module_name = os.path.splitext(os.path.basename(file))[0];
     try:
-        # 导入模块
-        module = __import__(module_name)
-        # 获取所有非下划线开头的函数
+        # Import module
+        module = __import__(module_name);
+        # Get all non-underscore-prefixed functions
         funcs = [name for name, obj in module.__dict__.items() 
-                if callable(obj) and not name.startswith('_')]
-        # 只导入非下划线开头的函数
+                if callable(obj) and not name.startswith('_')];
+        # Only import non-underscore-prefixed functions
         for func in funcs:
-            exec(f"from {module_name} import {func}")
+            exec(f"from {module_name} import {func}");
     except Exception as e:
-        print(f"Error importing {module_name}: {str(e)}")
+        print(f"Error importing {module_name}: {str(e)}");
 
-# 执行用户代码
+# Execute user code
 try:
-    code = """${code.replace(this.settings.triggerSymbol, '').trim()}"""
+    code = """${code.replace(this.settings.triggerSymbol, '').trim()}""";
     if '(' in code and ')' in code:
-        # 提取函数名和参数
-        func_name = code.split('(')[0].strip()
-        args_str = code[len(func_name)+1:-1].strip()
+        # Extract function name and parameters
+        func_name = code.split('(')[0].strip();
+        args_str = code[len(func_name)+1:-1].strip();
         
-        # 执行函数调用
+        # Execute function call
         if args_str:
-            result = eval(f"{func_name}({args_str})")
+            result = eval(f"{func_name}({args_str})");
         else:
-            result = eval(f"{func_name}()")
+            result = eval(f"{func_name}()");
     else:
-        result = eval(code)
+        result = eval(code);
     
     if result is not None:
-        print(result)
+        print(result);
 except Exception as e:
-    print(f"Error: {str(e)}")
+    print(f"Error: {str(e)}");
 `;
                 
                 const pythonProcess = spawn(this.settings.pythonPath, ['-c', setupCode], {
@@ -178,10 +178,10 @@ except Exception as e:
                     if (code === 0) {
                         const set_content_prefix = '__SET_CONTENT__';
                         if (output.startsWith(set_content_prefix)) {
-                            // 替换文档内容
+                            // Replace document content
                             const newContent = output.substring(set_content_prefix.length);
                             view.editor.setValue(newContent);
-                            resolve('');  // 不显示输出
+                            resolve('');  // Do not display output
                         } else {
                             resolve(output.trim());
                         }
