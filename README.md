@@ -38,7 +38,9 @@ This plugin allows users to run Python scripts directly in the Obsidian editor. 
 
 ### Example from `deepseek.py`
 - **Function**: `deepseek_r1(query)`  
-  Uses the OpenAI API to process the query and generate a response based on the provided context.
+  Uses the DeepSeek R1 model to process the query and generate a response based on the provided context.
+- **Function**: `deepseek_chat(query)`  
+  Uses the DeepSeek Chat model to process the query and generate a response based on the provided context.
 
 
 ## Installation Requirements
@@ -145,15 +147,6 @@ You can configure the following in the Obsidian settings:
    - Ensure the current directory has write permissions.
    - Check if matplotlib and wordcloud are installed correctly.
 
-## Contribution Guidelines
-
-Contributions are welcome!
-
-1. Fork this repository.
-2. Create your feature branch.
-3. Commit your changes.
-4. Push to the branch.
-5. Create a Pull Request.
 
 ## License
 
